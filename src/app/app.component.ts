@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  private showMenuPages = ['/home', '/settings', '/servicio-streaming'];
+  private showMenuPages = ['/home', '/settings', '/servicios-streaming'];
   userName: string | null = null;
 
   constructor(private router: Router, private menu: MenuController, private authService: AuthService) {
