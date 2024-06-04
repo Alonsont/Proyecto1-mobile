@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { AuthService } from './auth.service';  
 
 @Component({
   selector: 'app-root',
@@ -8,12 +9,14 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  private showMenuPages = ['/home', '/settings', '/servicios-streaming'];
+  private showMenuPages = ['/home', '/settings', '/servicio-streaming'];
+  userName: string | null = null;
 
-  constructor(private router: Router, private menu: MenuController) { 
+  constructor(private router: Router, private menu: MenuController, private authService: AuthService) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.closeMenu();
+        this.userName = this.authService.getUserName(); 
       }
     });
   }
@@ -23,11 +26,13 @@ export class AppComponent {
   }
 
   closeMenu() {
-    this.menu.close(); 
+    this.menu.close();
   }
-  
+
   logout() {
+    this.authService.logout();
     this.menu.close();
     this.router.navigate(['/login']);
   }
 }
+
