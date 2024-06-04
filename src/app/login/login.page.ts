@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,14 +7,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
-  email: string = '';
-  password: string = '';
+  email!: string;
+  password!: string;
 
   constructor(private router: Router) {}
 
   onLogin() {
-    // Aquí añadirías la lógica de autenticación.
-    // Si es correcta:
-    this.router.navigate(['/home']);
+    // Implementar lógica de autenticación
+    if (this.email && this.password) {
+      console.log('Email:', this.email);
+      console.log('Password:', this.password);
+      this.router.navigate(['/home']);
+    }
   }
 }
