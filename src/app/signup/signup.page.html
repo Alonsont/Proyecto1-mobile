@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="signup()">
+  <form >
     <ion-list>
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
@@ -20,7 +20,7 @@
         <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
       </ion-item>
     </ion-list>
-    <ion-button expand="full" type="submit">Crear Cuenta</ion-button>
+    <ion-button (click)= "guardar()" >Crear Cuenta</ion-button>
     <ion-item *ngIf="errorMessage">
       <ion-label color="danger">{{ errorMessage }}</ion-label>
     </ion-item>

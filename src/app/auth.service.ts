@@ -1,43 +1,63 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
-  private userName: string | null = null;
-  private users: { email: string, password: string, name: string }[] = [];
+  public database!: SQLiteObject;
 
-  constructor(private router: Router) { }
 
-  login(email: string, password: string): boolean {
-    const user = this.users.find(u => u.email === email && u.password === password);
-    if (user) {
-      this.userName = user.name;
-      return true;
-    } else {
-      return false;
-    }
+
+  constructor(private router: Router, private sqlite: SQLite, private toastController: ToastController) {
+    this.initDatabase();
   }
 
-  signup(email: string, password: string, name: string): boolean {
-    const userExists = this.users.some(u => u.email === email);
-    if (userExists) {
-      return false;
-    } else {
-      this.users.push({ email, password, name });
-      this.userName = name;
-      return true;
-    }
+
+  private initDatabase() {
+    this.sqlite.create({
+      name: 'bd1.db',
+      location: 'default',
+    }).then((database: SQLiteObject) => {
+      this.database = database;
+      this.createTables();
+    })
+
   }
 
-  logout() {
-    this.userName = null;
+  private async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000
+    });
+    toast.present();
   }
 
-  getUserName(): string | null {
-    return this.userName;
+  private createTables() {
+    this.database.executeSql('CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT, user Text, nombre Text, password Text, mail Text)', [])
+      .then(() => this.presentToast('tabla creada'))
+      .catch(error => this.presentToast('Error al crear tabla' + error));
+
+  }
+
+  crearUsuario(user: string, nombre: string, password: string, mail: string) {
+    return this.database.executeSql('Insert into usuarios (user, nombre, password, mail) VALUES (?,?,?,?)',
+      [user, nombre, password, mail]).then(() => this.presentToast('Usuario creado con exito'))
+      .catch(error => this.presentToast('Error al crear usuario' + error));
+  }
+
+  validarUsuario(user: string, password: string) {
+    return this.database.executeSql('SELECT * from usuarios WHERE user = ? AND password = ?', [user, password]).then((res) => {
+      if (res.rows.lenght > 0) {
+        return res.rows.item(0);
+      } else {
+        return null;
+      }
+    }).catch(error => this.presentToast('Error en las credenciales' + error));
+
   }
 }
-
 

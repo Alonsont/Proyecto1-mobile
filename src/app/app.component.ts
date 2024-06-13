@@ -16,7 +16,7 @@ export class AppComponent {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.closeMenu();
-        this.userName = this.authService.getUserName(); 
+        
       }
     });
   }
@@ -29,10 +29,6 @@ export class AppComponent {
     this.menu.close();
   }
 
-  logout() {
-    this.authService.logout();
-    this.menu.close();
-    this.router.navigate(['/login']);
-  }
+  
 }
 

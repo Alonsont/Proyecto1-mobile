@@ -13,7 +13,7 @@ export class HomePage implements OnInit {
   movies: { title: string }[];
 
   constructor(private authService: AuthService) {
-    this.userName = this.authService.getUserName();
+    
     this.recommendedMovie = { title: 'Película Recomendada' };
     this.movies = [
       { title: 'Película 1' },

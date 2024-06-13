@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup',
@@ -11,15 +12,40 @@ export class SignupPage {
   email: string = '';
   password: string = '';
   name: string = '';
+  user: string = '';
   errorMessage: string | null = null;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private alertController: AlertController) { }
 
-  signup() {
-    if (this.authService.signup(this.email, this.password, this.name)) {
-      this.router.navigate(['/home']);
-    } else {
-      this.errorMessage = 'El email ya está en uso';
+
+
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Mensaje',
+      message: message,
+      buttons: ['OK']
+    });
+  }
+
+
+  guardar() {
+    if (this.user.trim() === '' || this.password.trim() === '') {
+      this.presentAlert('Error: usuario o contraseña vacios');
+    }else {
+      this.guardarDatos();
     }
   }
+
+  guardarDatos() {
+    this.authService.crearUsuario(this.user, this.name, this.password, this.email)
+    .then(() => {
+      this.presentAlert('Usuario creado exitosamente');
+    })
+    .catch(error => {
+      this.presentAlert('Error al guardar datos' + error);
+    })
+  }
+
+
+  
 }

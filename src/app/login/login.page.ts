@@ -14,12 +14,6 @@ export class LoginPage {
 
   constructor(private router: Router, private authService: AuthService) { }
 
-  login() {
-    if (this.authService.login(this.email, this.password)) {
-      this.router.navigate(['/home']);
-    } else {
-      this.errorMessage = 'Email o contraseña incorrectos';
-    }
-  }
+  
 }
 
