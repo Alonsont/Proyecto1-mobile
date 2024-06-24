@@ -28,7 +28,7 @@ export class AuthService {
 
   }
 
-  private async presentToast(message: string) {
+    async presentToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
       duration: 2000
@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   crearUsuario(user: string, nombre: string, password: string, mail: string) {
-    return this.database.executeSql('Insert into usuarios (user, nombre, password, mail) VALUES (?,?,?,?)',
+    return this.database.executeSql('INSERT or IGNORE into usuarios (user, nombre, password, mail) VALUES (?,?,?,?)',
       [user, nombre, password, mail]).then(() => this.presentToast('Usuario creado con exito'))
       .catch(error => this.presentToast('Error al crear usuario' + error));
   }
@@ -58,6 +58,12 @@ export class AuthService {
       }
     }).catch(error => this.presentToast('Error en las credenciales' + error));
 
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
+    this.presentToast('Sesión cerrada correctamente.');
   }
 }
 

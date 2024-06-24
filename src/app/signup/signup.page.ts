@@ -33,7 +33,7 @@ export class SignupPage {
       this.presentAlert('Error: usuario o contraseña vacios');
     }else {
       this.guardarDatos();
-      this.router.navigate(['/home']);
+      this.router.navigate(['/login']);
     }
   }
 

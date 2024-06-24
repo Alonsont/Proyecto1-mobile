@@ -8,15 +8,15 @@
   <form >
     <ion-list>
       <ion-item>
-        <ion-label position="floating">Email</ion-label>
-        <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
+        <ion-label position="floating">Usuario</ion-label>
+        <ion-input type="string" [(ngModel)]="user" name="user" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
       </ion-item>
     </ion-list>
-    <ion-button expand="full" type="submit">Login</ion-button>
+    <ion-button expand="full" (click)= "ingresar()" >Login</ion-button>
     <ion-button expand="full" routerLink="/signup">Sign Up</ion-button>
     <ion-item *ngIf="errorMessage">
       <ion-label color="danger">{{ errorMessage }}</ion-label>

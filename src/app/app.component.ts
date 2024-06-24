@@ -28,6 +28,9 @@ export class AppComponent {
   closeMenu() {
     this.menu.close();
   }
+  logout() {
+    this.authService.logout();
+  }
 
   
 }
