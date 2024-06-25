@@ -24,8 +24,9 @@ export class AuthService {
     }).then((database: SQLiteObject) => {
       this.database = database;
       this.createTables();
-    })
-
+    }).catch(error => {
+      this.presentToast('Error al crear la base de datos: ' + error);
+    });
   }
 
     async presentToast(message: string) {
@@ -50,14 +51,19 @@ export class AuthService {
   }
 
   validarUsuario(user: string, password: string) {
-    return this.database.executeSql('SELECT * from usuarios WHERE user = ? AND password = ?', [user, password]).then((res) => {
-      if (res.rows.lenght > 0) {
+    return this.database.executeSql(
+      'SELECT * from usuarios WHERE user = ? AND password = ?',
+      [user, password]
+    ).then((res) => {
+      if (res.rows.length > 0) {
         return res.rows.item(0);
       } else {
+        this.presentToast('Usuario no encontrado o contraseña incorrecta');
         return null;
       }
-    }).catch(error => this.presentToast('Error en las credenciales' + error));
-
+    }).catch(error => {
+      this.presentToast('Error al validar usuario: ' + error);
+    });
   }
 
   logout() {

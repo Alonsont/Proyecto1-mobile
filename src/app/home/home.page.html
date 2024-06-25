@@ -3,8 +3,8 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      Bienvenido, {{ userName }}
+    <ion-title slot="end">
+      Bienvenido {{ userName }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,15 +15,29 @@
       <ion-card-title>Recomendación del día</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>{{ recommendedMovie.title }}</p>
+      <p>Aquí puedes mostrar la recomendación del día si tienes esa funcionalidad implementada.</p>
     </ion-card-content>
   </ion-card>
-  <ion-list>
+  
+  <ion-list *ngIf="movies.length > 0">
     <ion-list-header>
       <ion-label>Lista de Películas</ion-label>
     </ion-list-header>
     <ion-item *ngFor="let movie of movies">
-      <ion-label>{{ movie.title }}</ion-label>
+      <ion-card>
+        <img [src]="movie.image" alt="Poster"/>
+        <ion-card-header>
+          <ion-card-title>{{ movie.title }}</ion-card-title>
+          
+        </ion-card-header>
+      
+        <ion-card-content>
+          {{movie.description}}
+        </ion-card-content>
+      </ion-card>
     </ion-item>
   </ion-list>
+  <ion-item *ngIf="movies.length === 0">
+    <ion-label color="warning">Aún no se encontraron películas.</ion-label>
+  </ion-item>
 </ion-content>

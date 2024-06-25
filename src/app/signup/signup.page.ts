@@ -25,6 +25,7 @@ export class SignupPage {
       message: message,
       buttons: ['OK']
     });
+    await alert.present();
   }
 
 
@@ -33,20 +34,22 @@ export class SignupPage {
       this.presentAlert('Error: usuario o contraseña vacios');
     }else {
       this.guardarDatos();
-      this.router.navigate(['/login']);
+      
     }
   }
 
   guardarDatos() {
     this.authService.crearUsuario(this.user, this.name, this.password, this.email)
-    .then(() => {
-      this.presentAlert('Usuario creado exitosamente');
-    })
-    .catch(error => {
-      this.presentAlert('Error al guardar datos' + error);
-    })
+      .then(() => {
+        this.presentAlert('Usuario creado exitosamente');
+        this.router.navigate(['/login']); 
+      })
+      .catch(error => {
+        this.presentAlert('Error al guardar datos: ' + error);
+      });
   }
+}
 
 
   
-}
+

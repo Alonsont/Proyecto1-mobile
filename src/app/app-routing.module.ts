@@ -27,6 +27,21 @@ const routes: Routes = [
     path: 'servicios-streaming',
     loadChildren: () => import('./servicios-streaming/servicios-streaming.module').then( m => m.ServiciosStreamingPageModule)
   },
+  {
+    path: 'pelicula',
+    loadChildren: () => import('./pelicula/pelicula.module').then( m => m.PeliculaPageModule)
+  },
+  
+  {
+    path: 'camara',
+    loadChildren: () => import('./camara/camara.module').then( m => m.CamaraPageModule)
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./error404/error404.module').then( m => m.Error404PageModule)
+  },
+
+
 ];
 
 @NgModule({

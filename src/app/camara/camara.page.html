@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Camara</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">camara</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <ion-button (click)="takePicture()" class="ion-justify-content-center" color="danger"> Tomar foto</ion-button>
+    <ion-card class="ion-justify-content-center">
+    <img *ngIf="imageSource" src="{{imageSource}}" alt="imagen" style="width: 100%; max-width: 250px;">
+    </ion-card>
+  </div>
+</ion-content>

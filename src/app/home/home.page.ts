@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth.service';
 import { ToastController } from '@ionic/angular';
-
+import { ApiRestService } from '../api-rest.service';
 
 @Component({
   selector: 'app-home',
@@ -9,33 +8,36 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  userName!: string | null;
-  recommendedMovie: { title: string };
-  movies: { title: string }[];
+  movies: any[] = [];
+  userName: string = '';
 
-  constructor(private authService: AuthService, private toastController: ToastController) {
-    
-    this.recommendedMovie = { title: 'Película Recomendada' };
-    this.movies = [
-      { title: 'Película 1' },
-      { title: 'Película 2' },
-      { title: 'Película 3' },
-    ];
-    
-  }
-  
+  constructor(
+    private apiRestService: ApiRestService,
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {
-    this.userName = localStorage.getItem('nombreUsuario');
-    this.presentToast('bottom', 'Bienvenido '+ this.userName)
-    
+    this.userName = localStorage.getItem('nombreUsuario') || '';
+    this.presentToast('bottom', 'Bienvenido ' + this.userName);
+
+    this.apiRestService.getTop100Movies().subscribe(
+      (data: any) => {
+        this.movies = data; 
+        console.log(this.movies);
+      },
+      (error) => {
+        console.error('Error al buscar películas:', error);
+        this.presentToast('bottom', 'Error al buscar películas');
+      }
+    );
   }
 
-async presentToast(position: 'top' | 'middle' | 'bottom', msj: string) {
-  const toast = await this.toastController.create({
-    message: msj,
-    duration: 2000,
-    position: position,
-  });
-}
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: position,
+    });
+    toast.present();
+  }
 }

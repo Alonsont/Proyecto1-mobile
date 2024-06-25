@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-servicios-streaming',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServiciosStreamingPage implements OnInit {
 
+  
   constructor() { }
 
   ngOnInit() {
   }
-
+ 
+  
 }

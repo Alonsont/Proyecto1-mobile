@@ -13,21 +13,26 @@ export class LoginPage {
   password: string = '';
   errorMessage: string | null = null;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private toastController: ToastController) { }
 
-  
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000
+    });
+    await toast.present();
+  }
+
   ingresar() {
     this.authService.validarUsuario(this.user, this.password).then((usuario) => {
       if (usuario) {
-        
         this.router.navigate(['/home']);
         localStorage.setItem('nombreUsuario', usuario.nombre);
       } else {
-        
-        this.authService.presentToast('Credenciales incorrectas.');
+        this.presentToast('Credenciales incorrectas.');
       }
     }).catch(error => {
-      this.authService.presentToast('Error durante el login: ' + error);
+      this.presentToast('Error durante el login: ' + error);
     });
   }
 }
